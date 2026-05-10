@@ -20,15 +20,18 @@ function parseEnv(source) {
 }
 
 async function loadEnv() {
+  const envJsonUrl = new URL("../env.json", import.meta.url);
+  const dotEnvUrl = new URL("../.env", import.meta.url);
+
   try {
-    const response = await fetch("./env.json", { cache: "no-store" });
+    const response = await fetch(envJsonUrl, { cache: "no-store" });
     if (response.ok) return response.json();
   } catch {
     // Fall back to local .env for simple static-server development.
   }
 
   try {
-    const response = await fetch("./.env", { cache: "no-store" });
+    const response = await fetch(dotEnvUrl, { cache: "no-store" });
     if (!response.ok) return {};
     return parseEnv(await response.text());
   } catch {

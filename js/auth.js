@@ -17,7 +17,7 @@ function setMode(nextMode) {
 async function handleAuth(event) {
   event.preventDefault();
   if (!isConfigured()) {
-    toast("Supabase env was not loaded. Serve the app over HTTP and check .env.", "error");
+    toast("Supabase env was not loaded. Check that production generated env.json.", "error");
     return;
   }
 
