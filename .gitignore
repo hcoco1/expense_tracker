@@ -1,4 +1,5 @@
 config.js
+env.json
 .env
 .env.*
 !.env.example

@@ -54,7 +54,7 @@ EXPENSE_TRACKER_SUPABASE_URL=https://your-project.supabase.co
 EXPENSE_TRACKER_SUPABASE_ANON_KEY=your-anon-public-key
 ```
 
-`.env` files are intentionally ignored by Git. Do not commit Supabase keys, database URLs, service role keys, JWT secrets, or generated local environment files.
+`.env` files and generated runtime environment files are intentionally ignored by Git. Do not commit Supabase keys, database URLs, service role keys, JWT secrets, or generated local environment files.
 
 The anon public key is expected to be visible in browser apps. Security depends on Supabase Auth plus Row Level Security policies, not on hiding the anon key. Never expose the `service_role` key, database password, JWT secret, or access tokens in this static app.
 
@@ -78,7 +78,7 @@ sh scripts/render-build.sh
 5. Set `Publish Directory` to `.`.
 6. Deploy.
 
-Render will generate `.env` during deployment from the environment variables. The generated file is not committed to Git.
+Render will generate `env.json` during deployment from the environment variables. The generated file is not committed to Git.
 
 ## Credential Exposure Response
 

@@ -21,6 +21,13 @@ function parseEnv(source) {
 
 async function loadEnv() {
   try {
+    const response = await fetch("./env.json", { cache: "no-store" });
+    if (response.ok) return response.json();
+  } catch {
+    // Fall back to local .env for simple static-server development.
+  }
+
+  try {
     const response = await fetch("./.env", { cache: "no-store" });
     if (!response.ok) return {};
     return parseEnv(await response.text());

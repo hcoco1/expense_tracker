@@ -11,9 +11,11 @@ if [ -z "${EXPENSE_TRACKER_SUPABASE_ANON_KEY:-}" ]; then
   exit 1
 fi
 
-cat > .env <<EOF
-EXPENSE_TRACKER_SUPABASE_URL=${EXPENSE_TRACKER_SUPABASE_URL}
-EXPENSE_TRACKER_SUPABASE_ANON_KEY=${EXPENSE_TRACKER_SUPABASE_ANON_KEY}
+cat > env.json <<EOF
+{
+  "EXPENSE_TRACKER_SUPABASE_URL": "${EXPENSE_TRACKER_SUPABASE_URL}",
+  "EXPENSE_TRACKER_SUPABASE_ANON_KEY": "${EXPENSE_TRACKER_SUPABASE_ANON_KEY}"
+}
 EOF
 
-echo "Generated .env from Render environment variables."
+echo "Generated env.json from Render environment variables."
