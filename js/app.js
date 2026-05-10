@@ -1,6 +1,6 @@
 import { requireSession, supabase } from "./supabase.js";
 import { fetchCategories, seedDefaultCategories } from "./categories.js";
-import { calculateSummary, filteredExpenses, renderCharts } from "./charts.js";
+import { calculateSummary, filteredExpenses, periodLabel, renderCharts } from "./charts.js";
 import { createExpense, deleteExpense, fetchExpenses, subscribeToExpenses, updateExpense } from "./expenses.js";
 import { currencies, loadCache, saveCache, state } from "./state.js";
 import {
@@ -47,7 +47,12 @@ function renderCategorySelects() {
 function renderDateFilters() {
   const month = $("#filterMonth");
   const year = $("#filterYear");
-  if (!month || !year) return;
+  const period = $("#filterPeriod");
+  const startDate = $("#filterStartDate");
+  const endDate = $("#filterEndDate");
+  if (!month || !year || !period) return;
+
+  period.value = state.filters.period;
 
   month.innerHTML = Array.from({ length: 12 }, (_, index) => {
     const value = String(index + 1).padStart(2, "0");
@@ -59,16 +64,24 @@ function renderDateFilters() {
   year.innerHTML = Array.from({ length: 7 }, (_, index) => String(currentYear - 5 + index))
     .map((value) => `<option value="${value}" ${value === state.filters.year ? "selected" : ""}>${value}</option>`)
     .join("");
+
+  startDate.value = state.filters.customStart;
+  endDate.value = state.filters.customEnd;
+  updatePeriodControlState();
 }
 
 function renderSummary(expenses) {
   const summary = calculateSummary(expenses);
+  const label = periodLabel();
+  $("#incomeLabel").textContent = `${label} Income`;
+  $("#expenseLabel").textContent = `${label} Expenses`;
+  $("#trendLabel").textContent = `${label} Trend`;
   $("#monthlyIncome").textContent = formatCurrency(summary.income);
   $("#monthlyExpenses").textContent = formatCurrency(summary.expense);
   $("#monthlySavings").textContent = formatCurrency(summary.balance);
   $("#totalBalance").textContent = formatCurrency(calculateSummary(state.expenses).balance);
   const rate = summary.income ? Math.max(0, Math.round((summary.balance / summary.income) * 100)) : 0;
-  $("#savingsRate").textContent = `${rate}% saved this month`;
+  $("#savingsRate").textContent = `${rate}% saved in ${label.toLowerCase()}`;
 }
 
 function renderExpenses() {
@@ -125,6 +138,19 @@ function syncAll() {
   renderExpenses();
 }
 
+function updatePeriodControlState() {
+  const filters = $(".filters");
+  const month = $("#filterMonth");
+  const year = $("#filterYear");
+  const isMonth = state.filters.period === "month";
+  const isYear = state.filters.period === "year";
+  const isCustom = state.filters.period === "custom";
+
+  filters.classList.toggle("custom-period", isCustom);
+  month.hidden = !isMonth;
+  year.hidden = !(isMonth || isYear);
+}
+
 function bindDashboardEvents() {
   document.addEventListener("click", async (event) => {
     const trigger = event.target.closest("[data-action]");
@@ -170,6 +196,12 @@ function bindDashboardEvents() {
     state.filters.category = event.target.value;
     renderExpenses();
   });
+  $("#filterPeriod").addEventListener("change", (event) => {
+    state.filters.period = event.target.value;
+    localStorage.setItem("expense_tracker_period", state.filters.period);
+    updatePeriodControlState();
+    renderExpenses();
+  });
   $("#filterMonth").addEventListener("change", (event) => {
     state.filters.month = event.target.value;
     renderExpenses();
@@ -181,6 +213,14 @@ function bindDashboardEvents() {
   $("#currencySelect").addEventListener("change", (event) => {
     state.filters.currency = event.target.value;
     localStorage.setItem("expense_tracker_currency", state.filters.currency);
+    renderExpenses();
+  });
+  $("#filterStartDate").addEventListener("change", (event) => {
+    state.filters.customStart = event.target.value;
+    renderExpenses();
+  });
+  $("#filterEndDate").addEventListener("change", (event) => {
+    state.filters.customEnd = event.target.value;
     renderExpenses();
   });
 

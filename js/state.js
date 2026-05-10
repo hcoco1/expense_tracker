@@ -4,8 +4,11 @@ export const state = {
   expenses: [],
   filters: {
     category: "all",
+    period: localStorage.getItem("expense_tracker_period") || "month",
     month: String(new Date().getMonth() + 1).padStart(2, "0"),
     year: String(new Date().getFullYear()),
+    customStart: new Date().toISOString().slice(0, 10),
+    customEnd: new Date().toISOString().slice(0, 10),
     currency: localStorage.getItem("expense_tracker_currency") || "USD"
   },
   pendingDeleteId: null,

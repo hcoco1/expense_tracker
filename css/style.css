@@ -318,6 +318,14 @@ a {
   grid-column: 1 / -1;
 }
 
+.period-custom {
+  display: none;
+}
+
+.filters.custom-period .period-custom {
+  display: block;
+}
+
 .transaction-list,
 .category-list {
   display: grid;

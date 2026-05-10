@@ -9,7 +9,8 @@ A production-ready static expense tracker built with vanilla JavaScript modules,
 - Automatic default category seeding per user
 - Add, edit, delete, filter, and cache transactions
 - Income and expense categories with colors, icons, and type selector
-- Total balance, monthly income, monthly expenses, savings summary, recent transactions, category pie chart, and monthly trend chart
+- Total balance, period-based income, period-based expenses, savings summary, recent transactions, category pie chart, and adaptive trend chart
+- Flexible reporting periods: this week, this month, this year, all time, or custom date range
 - Mobile-first UI with dark/light theme, sticky bottom navigation, floating action button, full-screen mobile modals, loading skeletons, empty states, and toast notifications
 
 ## Folder Structure

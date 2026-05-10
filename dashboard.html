@@ -29,14 +29,14 @@
         <article class="card summary-card balance">
           <h2>Total Balance</h2>
           <p class="money" id="totalBalance">$0.00</p>
-          <span class="trend"><i data-lucide="sparkles"></i><span id="savingsRate">0% saved this month</span></span>
+          <span class="trend"><i data-lucide="sparkles"></i><span id="savingsRate">0% saved in this period</span></span>
         </article>
         <article class="card summary-card">
-          <h2>Monthly Income</h2>
+          <h2 id="incomeLabel">Period Income</h2>
           <p class="money" id="monthlyIncome">$0.00</p>
         </article>
         <article class="card summary-card">
-          <h2>Monthly Expenses</h2>
+          <h2 id="expenseLabel">Period Expenses</h2>
           <p class="money" id="monthlyExpenses">$0.00</p>
         </article>
         <article class="card summary-card">
@@ -48,9 +48,18 @@
       <section class="card panel" aria-label="Filters">
         <div class="filters">
           <select class="select wide" id="filterCategory" aria-label="Filter by category"></select>
+          <select class="select" id="filterPeriod" aria-label="Reporting period">
+            <option value="week">This week</option>
+            <option value="month">This month</option>
+            <option value="year">This year</option>
+            <option value="all">All time</option>
+            <option value="custom">Custom</option>
+          </select>
           <select class="select" id="filterMonth" aria-label="Filter by month"></select>
           <select class="select" id="filterYear" aria-label="Filter by year"></select>
           <select class="select" id="currencySelect" aria-label="Currency"></select>
+          <input class="input period-custom" id="filterStartDate" type="date" aria-label="Custom start date">
+          <input class="input period-custom" id="filterEndDate" type="date" aria-label="Custom end date">
         </div>
       </section>
 
@@ -68,7 +77,7 @@
             <div class="chart-box"><canvas id="categoryChart"></canvas></div>
           </article>
           <article class="card panel">
-            <div class="panel-title"><h2>Monthly Trend</h2></div>
+            <div class="panel-title"><h2 id="trendLabel">Period Trend</h2></div>
             <div class="chart-box"><canvas id="trendChart"></canvas></div>
           </article>
         </div>
