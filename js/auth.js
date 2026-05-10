@@ -17,7 +17,7 @@ function setMode(nextMode) {
 async function handleAuth(event) {
   event.preventDefault();
   if (!isConfigured()) {
-    toast("Add your Supabase runtime config in config.js.", "error");
+    toast("Add your Supabase values to .env.", "error");
     return;
   }
 

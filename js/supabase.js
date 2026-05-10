@@ -1,5 +1,37 @@
-const SUPABASE_URL = window.EXPENSE_TRACKER_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = window.EXPENSE_TRACKER_SUPABASE_ANON_KEY || "";
+function parseEnv(source) {
+  return source.split("\n").reduce((values, line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) return values;
+
+    const separator = trimmed.indexOf("=");
+    if (separator === -1) return values;
+
+    const key = trimmed.slice(0, separator).trim();
+    let value = trimmed.slice(separator + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    values[key] = value;
+    return values;
+  }, {});
+}
+
+async function loadEnv() {
+  try {
+    const response = await fetch("./.env", { cache: "no-store" });
+    if (!response.ok) return {};
+    return parseEnv(await response.text());
+  } catch {
+    return {};
+  }
+}
+
+const env = await loadEnv();
+const SUPABASE_URL = env.EXPENSE_TRACKER_SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = env.EXPENSE_TRACKER_SUPABASE_ANON_KEY || "";
 
 export const isConfigured = () =>
   SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.length > 30;

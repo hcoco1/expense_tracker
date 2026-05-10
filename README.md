@@ -21,7 +21,6 @@ expense-tracker/
 ├── dashboard.html
 ├── categories.html
 ├── .env.example
-├── config.sample.js
 ├── supabase-schema.sql
 ├── scripts/
 │   └── render-build.sh
@@ -48,14 +47,14 @@ expense-tracker/
 2. Open `SQL Editor` and run the full contents of `supabase-schema.sql`.
 3. In `Authentication > Providers`, enable Email.
 4. In `Project Settings > API`, copy your Project URL and anon public key.
-5. Create an untracked `config.js` from `config.sample.js`:
+5. Create an untracked `.env` file from `.env.example`:
 
-```js
-window.EXPENSE_TRACKER_SUPABASE_URL = "https://your-project.supabase.co";
-window.EXPENSE_TRACKER_SUPABASE_ANON_KEY = "your-anon-public-key";
+```text
+EXPENSE_TRACKER_SUPABASE_URL=https://your-project.supabase.co
+EXPENSE_TRACKER_SUPABASE_ANON_KEY=your-anon-public-key
 ```
 
-`config.js` is intentionally ignored by Git. Do not commit Supabase keys, database URLs, service role keys, JWT secrets, or generated local config files.
+`.env` files are intentionally ignored by Git. Do not commit Supabase keys, database URLs, service role keys, JWT secrets, or generated local environment files.
 
 The anon public key is expected to be visible in browser apps. Security depends on Supabase Auth plus Row Level Security policies, not on hiding the anon key. Never expose the `service_role` key, database password, JWT secret, or access tokens in this static app.
 
@@ -79,14 +78,14 @@ sh scripts/render-build.sh
 5. Set `Publish Directory` to `.`.
 6. Deploy.
 
-Render will generate `config.js` during deployment from the environment variables. The generated file is not committed to Git.
+Render will generate `.env` during deployment from the environment variables. The generated file is not committed to Git.
 
 ## Credential Exposure Response
 
 If these values were already deployed publicly:
 
 1. In Supabase, rotate the exposed anon key from `Project Settings > API`.
-2. Redeploy immediately with the new anon key in `config.js` or deployment environment variables.
+2. Redeploy immediately with the new anon key in `.env` or deployment environment variables.
 3. Search the deployed site and repository history for any `service_role` key, database URL, JWT secret, or password. If any were exposed, rotate them immediately.
 4. Keep RLS enabled on every table reachable from the browser and verify policies before trusting the new deployment.
 

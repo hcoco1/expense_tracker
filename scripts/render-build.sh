@@ -11,9 +11,9 @@ if [ -z "${EXPENSE_TRACKER_SUPABASE_ANON_KEY:-}" ]; then
   exit 1
 fi
 
-cat > config.js <<EOF
-window.EXPENSE_TRACKER_SUPABASE_URL = "${EXPENSE_TRACKER_SUPABASE_URL}";
-window.EXPENSE_TRACKER_SUPABASE_ANON_KEY = "${EXPENSE_TRACKER_SUPABASE_ANON_KEY}";
+cat > .env <<EOF
+EXPENSE_TRACKER_SUPABASE_URL=${EXPENSE_TRACKER_SUPABASE_URL}
+EXPENSE_TRACKER_SUPABASE_ANON_KEY=${EXPENSE_TRACKER_SUPABASE_ANON_KEY}
 EOF
 
-echo "Generated config.js from Render environment variables."
+echo "Generated .env from Render environment variables."
