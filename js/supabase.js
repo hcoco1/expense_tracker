@@ -1,5 +1,5 @@
-const SUPABASE_URL = window.EXPENSE_TRACKER_SUPABASE_URL || "https://pbtvyrsknuelaxsnqwpe.supabase.co";
-const SUPABASE_ANON_KEY = window.EXPENSE_TRACKER_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBidHZ5cnNrbnVlbGF4c25xd3BlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MjQzMTAsImV4cCI6MjA5NDAwMDMxMH0.EXG1DWhY8_tsbn3o07bFxqBnQRKDHlOL5TT7a8-URqU";
+const SUPABASE_URL = window.EXPENSE_TRACKER_SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = window.EXPENSE_TRACKER_SUPABASE_ANON_KEY || "";
 
 export const isConfigured = () =>
   SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY.length > 30;

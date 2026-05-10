@@ -17,7 +17,7 @@ function setMode(nextMode) {
 async function handleAuth(event) {
   event.preventDefault();
   if (!isConfigured()) {
-    toast("Add your Supabase URL and anon key in js/supabase.js.", "error");
+    toast("Add your Supabase runtime config in config.js.", "error");
     return;
   }
 

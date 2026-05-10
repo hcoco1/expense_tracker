@@ -20,7 +20,11 @@ expense-tracker/
 ├── index.html
 ├── dashboard.html
 ├── categories.html
+├── .env.example
+├── config.sample.js
 ├── supabase-schema.sql
+├── scripts/
+│   └── render-build.sh
 ├── css/
 │   ├── style.css
 │   ├── mobile.css
@@ -44,31 +48,47 @@ expense-tracker/
 2. Open `SQL Editor` and run the full contents of `supabase-schema.sql`.
 3. In `Authentication > Providers`, enable Email.
 4. In `Project Settings > API`, copy your Project URL and anon public key.
-5. Update [js/supabase.js](/home/hcoco1/code/expense_tracker/js/supabase.js:1):
+5. Create an untracked `config.js` from `config.sample.js`:
 
 ```js
-const SUPABASE_URL = "https://your-project.supabase.co";
-const SUPABASE_ANON_KEY = "your-anon-public-key";
+window.EXPENSE_TRACKER_SUPABASE_URL = "https://your-project.supabase.co";
+window.EXPENSE_TRACKER_SUPABASE_ANON_KEY = "your-anon-public-key";
 ```
 
-For a runtime config approach, set these before the module loads:
+`config.js` is intentionally ignored by Git. Do not commit Supabase keys, database URLs, service role keys, JWT secrets, or generated local config files.
 
-```html
-<script>
-  window.EXPENSE_TRACKER_SUPABASE_URL = "https://your-project.supabase.co";
-  window.EXPENSE_TRACKER_SUPABASE_ANON_KEY = "your-anon-public-key";
-</script>
-```
-
-Plain static sites on Render do not inject environment variables into browser JavaScript without a build step. Because this project intentionally has no build step, use one of the two approaches above.
+The anon public key is expected to be visible in browser apps. Security depends on Supabase Auth plus Row Level Security policies, not on hiding the anon key. Never expose the `service_role` key, database password, JWT secret, or access tokens in this static app.
 
 ## Render Static Deployment
 
 1. Push this folder to a Git repository.
 2. In Render, create a `Static Site`.
-3. Set `Build Command` to blank or `echo "static site"`.
-4. Set `Publish Directory` to `.`.
-5. Deploy.
+3. In `Environment`, add these variables:
+
+```text
+EXPENSE_TRACKER_SUPABASE_URL=https://your-project.supabase.co
+EXPENSE_TRACKER_SUPABASE_ANON_KEY=your-rotated-anon-public-key
+```
+
+4. Set `Build Command` to:
+
+```bash
+sh scripts/render-build.sh
+```
+
+5. Set `Publish Directory` to `.`.
+6. Deploy.
+
+Render will generate `config.js` during deployment from the environment variables. The generated file is not committed to Git.
+
+## Credential Exposure Response
+
+If these values were already deployed publicly:
+
+1. In Supabase, rotate the exposed anon key from `Project Settings > API`.
+2. Redeploy immediately with the new anon key in `config.js` or deployment environment variables.
+3. Search the deployed site and repository history for any `service_role` key, database URL, JWT secret, or password. If any were exposed, rotate them immediately.
+4. Keep RLS enabled on every table reachable from the browser and verify policies before trusting the new deployment.
 
 ## Local Development
 
