@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AppProvider, useApp, ADMIN_EMAILS } from './context/AppContext'
 import AuthPage from './pages/AuthPage'
@@ -34,7 +34,7 @@ function AdminRoute({ children }) {
 
 function AppRoutes() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Toaster
         position="top-center"
         toastOptions={{
@@ -48,7 +48,7 @@ function AppRoutes() {
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
