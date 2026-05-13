@@ -90,7 +90,7 @@ export default function CategoryModal({ open, category, onClose }) {
               <div className="grid grid-cols-6 gap-2">
                 {categoryColors.map((color) => (
                   <button key={color} type="button"
-                    className={`h-11 rounded-2xl border-2 transition-all ${colorClass(color)} ${form.color === color ? 'border-white ring-2 ring-primary/60 scale-95' : 'border-transparent'}`}
+                    className={`h-11 rounded-2xl border-2 transition-all ${colorClass(color)} ${form.color === color ? 'border-base-100 ring-2 ring-primary scale-95' : 'border-transparent'}`}
                     onClick={() => set('color', color)} aria-label={`Choose ${color}`}
                   />
                 ))}
@@ -102,7 +102,7 @@ export default function CategoryModal({ open, category, onClose }) {
               <div className="grid grid-cols-6 gap-2">
                 {categoryIcons.map((icon) => (
                   <button key={icon} type="button"
-                    className={`h-11 rounded-2xl border-2 grid place-items-center transition-all bg-base-300 ${form.icon === icon ? 'border-white ring-2 ring-primary/60 scale-95' : 'border-transparent'}`}
+                    className={`h-11 rounded-2xl border-2 grid place-items-center transition-all bg-base-300 ${form.icon === icon ? 'border-base-content ring-2 ring-primary scale-95' : 'border-transparent'}`}
                     onClick={() => set('icon', icon)} aria-label={`Choose ${icon}`}
                   >
                     <CategoryIcon icon={icon} size={16} />

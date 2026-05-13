@@ -10,13 +10,14 @@ import { filteredExpenses, buildTrendBuckets, periodLabel } from '../lib/filters
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Filler)
 
 function chartTextColor() {
-  // Read DaisyUI's base-content color
-  return getComputedStyle(document.documentElement).getPropertyValue('--bc') || '#94a3b8'
+  // DaisyUI v3 sets color:oklch(var(--bc)) on [data-theme]; read the resolved RGB from body
+  const color = getComputedStyle(document.body).color
+  return color || '#94a3b8'
 }
 
 export default function Charts() {
   const t = useT()
-  const { expenses, categories, filters } = useApp()
+  const { expenses, categories, filters, theme } = useApp()
   const filtered = filteredExpenses(expenses, filters, categories)
   const label = t(periodLabel(filters.period))
 
@@ -60,6 +61,7 @@ export default function Charts() {
           <h2 className="card-title text-sm uppercase tracking-wider text-base-content/60 mb-3">{t('Category Mix')}</h2>
           <div className="relative h-64">
             <Doughnut
+              key={`doughnut-${theme}`}
               data={doughnutData}
               options={{ responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { position: 'bottom', labels: { color: textColor, boxWidth: 10, usePointStyle: true } }, tooltip: { enabled: Boolean(catValues.length) } } }}
             />
@@ -72,6 +74,7 @@ export default function Charts() {
           <h2 className="card-title text-sm uppercase tracking-wider text-base-content/60 mb-3">{label} {t('Trend')}</h2>
           <div className="relative h-64">
             <Line
+              key={`trend-${theme}`}
               data={{ labels: buckets.map((b) => b.label), datasets: [{ data: trendData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.16)', fill: true, tension: 0.38, pointRadius: 4, pointBackgroundColor: '#3b82f6' }] }}
               options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: textColor }, grid: { display: false } }, y: { ticks: { color: textColor }, grid: { color: 'rgba(148,163,184,0.14)' } } } }}
             />

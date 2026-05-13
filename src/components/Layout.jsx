@@ -41,18 +41,25 @@ export default function Layout({ title, subtitle, children, onAddClick, onShareC
               <button tabIndex={0} className="btn btn-ghost btn-sm btn-square" aria-label={t('Theme')}>
                 <Palette size={17} />
               </button>
-              <div tabIndex={0} className="dropdown-content z-[60] mt-1 p-2 shadow-2xl bg-base-200 border border-base-300 rounded-2xl w-52 max-h-80 overflow-y-auto">
+              <div tabIndex={0} className="dropdown-content z-[60] mt-1 p-2 shadow-2xl bg-base-200 border border-base-300 rounded-2xl w-56 max-h-80 overflow-y-auto">
                 {THEMES.map(({ group, items }) => (
                   <div key={group}>
                     <p className="text-xs font-bold uppercase text-base-content/40 px-2 py-1">{group}</p>
                     {items.map((name) => (
                       <button
                         key={name}
-                        className={`w-full text-left px-3 py-1.5 rounded-xl text-sm capitalize transition-colors hover:bg-base-300 ${theme === name ? 'bg-primary/20 font-bold text-primary' : ''}`}
-                        onClick={() => setTheme(name)}
-                        data-theme={name}
+                        className={`w-full text-left px-3 py-1.5 rounded-xl text-sm capitalize transition-colors hover:bg-base-300 flex items-center justify-between gap-2 ${theme === name ? 'bg-primary/20 font-bold text-primary' : 'text-base-content'}`}
+                        onClick={() => {
+                          document.documentElement.setAttribute('data-theme', name)
+                          setTheme(name)
+                        }}
                       >
-                        {name}
+                        <span className="truncate">{name}</span>
+                        <span className="flex gap-1 shrink-0" data-theme={name}>
+                          <span className="w-3 h-3 rounded-full bg-primary" />
+                          <span className="w-3 h-3 rounded-full bg-secondary" />
+                          <span className="w-3 h-3 rounded-full bg-accent" />
+                        </span>
                       </button>
                     ))}
                   </div>

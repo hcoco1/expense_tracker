@@ -8,20 +8,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Universal gradient that adapts to all 29 DaisyUI themes via CSS vars */
   body {
     min-height: 100vh;
-  }
-
-  [data-theme='dark'] body {
     background:
-      radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34rem),
-      linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
-  }
-
-  [data-theme='light'] body {
-    background:
-      radial-gradient(circle at top left, rgba(59, 130, 246, 0.13), transparent 34rem),
-      linear-gradient(180deg, #f4f7fb 0%, #e9eef7 100%);
+      radial-gradient(ellipse at top left, oklch(var(--p) / 0.11) 0%, transparent 52%),
+      oklch(var(--b1));
   }
 }
 
