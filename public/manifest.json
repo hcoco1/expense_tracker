@@ -1,0 +1,31 @@
+{
+  "name": "Expense Tracker",
+  "short_name": "Expenses",
+  "description": "Track every expense and income stream with clarity. Private spending insights.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d1117",
+  "theme_color": "#3b82f6",
+  "categories": ["finance", "productivity"],
+  "lang": "en",
+  "icons": [
+    { "src": "/favicon.svg",        "type": "image/svg+xml", "sizes": "any",     "purpose": "any maskable" },
+    { "src": "/apple-touch-icon.svg","type": "image/svg+xml", "sizes": "180x180", "purpose": "any" }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Home",
+      "url": "/dashboard",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Categories",
+      "short_name": "Tags",
+      "url": "/categories",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
+  ]
+}

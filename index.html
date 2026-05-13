@@ -1,53 +1,73 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
-    <title>Expense Tracker | Sign in</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/mobile.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- Primary meta -->
+    <title>Expense Tracker — Private Spending Insights</title>
+    <meta name="description" content="Track every expense and income stream with clarity. Beautiful charts, multi-currency support, 29 themes, and real-time sync — completely private." />
+    <meta name="keywords" content="expense tracker, budget app, personal finance, spending tracker, income tracker, multi-currency" />
+    <meta name="author" content="Expense Tracker" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Theme / PWA -->
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Expenses" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Expense Tracker" />
+    <meta property="og:title" content="Expense Tracker — Private Spending Insights" />
+    <meta property="og:description" content="Track every expense and income stream with clarity. Beautiful charts, multi-currency support, 29 themes, and real-time sync." />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Expense Tracker app preview" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Expense Tracker — Private Spending Insights" />
+    <meta name="twitter:description" content="Track every expense and income stream with clarity. Beautiful charts, multi-currency support, 29 themes, and real-time sync." />
+    <meta name="twitter:image" content="/og-image.svg" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Expense Tracker",
+      "description": "Track every expense and income stream with clarity. Private spending insights.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": ["en", "es", "nl"],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Expense and income tracking",
+        "Multi-currency support",
+        "29 visual themes",
+        "English, Spanish, and Dutch UI",
+        "Real-time sync via Supabase",
+        "CSV export",
+        "Offline cache",
+        "Charts and analytics"
+      ]
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <main class="auth-shell">
-      <section class="auth-card" aria-labelledby="authTitle">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true"><i data-lucide="wallet-cards"></i></div>
-          <div>
-            <h1 id="authTitle">Expense Tracker</h1>
-            <p>Private spending insights in a polished mobile workspace.</p>
-          </div>
-        </div>
-
-        <div class="tabs" role="tablist" aria-label="Authentication mode">
-          <button class="tab-btn active" type="button" data-auth-tab="login">Login</button>
-          <button class="tab-btn" type="button" data-auth-tab="register">Register</button>
-        </div>
-
-        <form class="form" id="authForm" novalidate>
-          <div class="field">
-            <label for="email">Email</label>
-            <input class="input" id="email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <input class="input" id="password" name="password" type="password" autocomplete="current-password" minlength="6" required>
-          </div>
-          <button class="btn primary" type="submit" id="authSubmit">
-            <i data-lucide="log-in"></i>
-            <span>Login</span>
-          </button>
-        </form>
-      </section>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module" src="./js/auth.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
