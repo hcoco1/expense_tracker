@@ -5,7 +5,11 @@
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:5175/)",
       "Bash(pkill -f \"vite --port 5175\")",
-      "Bash(VITE_SUPABASE_URL=test VITE_SUPABASE_ANON_KEY=test npm run build)"
+      "Bash(VITE_SUPABASE_URL=test VITE_SUPABASE_ANON_KEY=test npm run build)",
+      "Bash(npm --version)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
