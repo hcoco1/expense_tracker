@@ -4,7 +4,8 @@
       "Bash(npm install *)",
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:5175/)",
-      "Bash(pkill -f \"vite --port 5175\")"
+      "Bash(pkill -f \"vite --port 5175\")",
+      "Bash(VITE_SUPABASE_URL=test VITE_SUPABASE_ANON_KEY=test npm run build)"
     ]
   }
 }

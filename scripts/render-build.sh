@@ -11,11 +11,9 @@ if [ -z "${EXPENSE_TRACKER_SUPABASE_ANON_KEY:-}" ]; then
   exit 1
 fi
 
-cat > env.json <<EOF
-{
-  "EXPENSE_TRACKER_SUPABASE_URL": "${EXPENSE_TRACKER_SUPABASE_URL}",
-  "EXPENSE_TRACKER_SUPABASE_ANON_KEY": "${EXPENSE_TRACKER_SUPABASE_ANON_KEY}"
-}
-EOF
+# Expose as VITE_ vars so Vite embeds them at build time
+export VITE_SUPABASE_URL="${EXPENSE_TRACKER_SUPABASE_URL}"
+export VITE_SUPABASE_ANON_KEY="${EXPENSE_TRACKER_SUPABASE_ANON_KEY}"
 
-echo "Generated env.json from Render environment variables."
+npm install
+npm run build

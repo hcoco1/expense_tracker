@@ -2,4 +2,4 @@ services:
   - type: static
     name: expense-tracker
     buildCommand: sh scripts/render-build.sh
-    staticPublishPath: .
+    staticPublishPath: dist
