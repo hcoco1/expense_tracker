@@ -15,5 +15,5 @@ fi
 export VITE_SUPABASE_URL="${EXPENSE_TRACKER_SUPABASE_URL}"
 export VITE_SUPABASE_ANON_KEY="${EXPENSE_TRACKER_SUPABASE_ANON_KEY}"
 
-npm install
+npm ci
 npm run build

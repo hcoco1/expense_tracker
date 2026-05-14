@@ -1,7 +1,6 @@
 import { RefreshCw, Pencil, Trash2 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
-import { filteredExpenses } from '../lib/filters'
 import { formatCurrency, formatDate, colorClass } from '../lib/utils'
 import CategoryIcon from './CategoryIcon'
 
@@ -15,8 +14,7 @@ function Skeleton() {
 
 export default function TransactionList({ loading, onEdit, onDelete, onRefresh }) {
   const t = useT()
-  const { expenses, categories, filters } = useApp()
-  const filtered = filteredExpenses(expenses, filters, categories)
+  const { categories, filters, filtered } = useApp()
 
   function getCategory(expense) {
     return expense.categories || categories.find((c) => c.id === expense.category_id)

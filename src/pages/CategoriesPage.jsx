@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { supabase } from '../lib/supabase'
 import Layout from '../components/Layout'
 import CategoryList from '../components/CategoryList'
 import CategoryModal from '../components/CategoryModal'
@@ -34,7 +35,18 @@ export default function CategoriesPage() {
 
   function openAdd() { setEditingCategory(null); setCatModalOpen(true) }
   function openEdit(cat) { setEditingCategory(cat); setCatModalOpen(true) }
-  function openDelete(id) { setPendingDeleteId(id); setConfirmOpen(true) }
+
+  async function openDelete(id) {
+    if (supabase) {
+      const { data } = await supabase.from('expenses').select('id').eq('category_id', id).limit(1)
+      if (data?.length) {
+        toast.error(t('This category has transactions. Reassign or delete them first.'))
+        return
+      }
+    }
+    setPendingDeleteId(id)
+    setConfirmOpen(true)
+  }
 
   async function handleConfirmDelete() {
     if (!pendingDeleteId) return

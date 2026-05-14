@@ -3,7 +3,6 @@ import toast from 'react-hot-toast'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
 import { usePageTitle } from '../hooks/usePageTitle'
-import { supabase } from '../lib/supabase'
 import Layout from '../components/Layout'
 import SummaryCards from '../components/SummaryCards'
 import FiltersBar from '../components/FiltersBar'
@@ -37,16 +36,6 @@ export default function DashboardPage() {
       }
     }
     if (session?.user?.id) init()
-  }, [session?.user?.id]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (!supabase || !session?.user?.id) return
-    const channel = supabase
-      .channel('expense-tracker-dashboard')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'expenses', filter: `user_id=eq.${session.user.id}` },
-        () => fetchExpenses())
-      .subscribe()
-    return () => supabase.removeChannel(channel)
   }, [session?.user?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function openAdd() { setEditingExpense(null); setTxModalOpen(true) }

@@ -106,6 +106,16 @@ export function buildTrendBuckets(filters, expenses) {
         return { label: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }), start: date, end: endOfDay(date) }
       })
     }
+    // Custom range > 31 days: show monthly buckets spanning the actual range
+    const months = []
+    const cursor = new Date(start.getFullYear(), start.getMonth(), 1)
+    while (cursor <= end) {
+      const mStart = new Date(cursor)
+      const mEnd = endOfDay(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0))
+      months.push({ label: mStart.toLocaleDateString(undefined, { month: 'short', year: '2-digit' }), start: mStart, end: mEnd })
+      cursor.setMonth(cursor.getMonth() + 1)
+    }
+    return months
   }
 
   if (period === 'all') {

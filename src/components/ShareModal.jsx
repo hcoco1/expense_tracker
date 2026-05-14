@@ -3,7 +3,7 @@ import { X, Share2, Copy, Download, FileJson, Check, TrendingUp, TrendingDown, W
 import toast from 'react-hot-toast'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
-import { filteredExpenses, calculateSummary, periodLabel } from '../lib/filters'
+import { calculateSummary, periodLabel } from '../lib/filters'
 import { formatCurrency } from '../lib/utils'
 import {
   buildShareText, shareNative, copyToClipboard,
@@ -12,14 +12,13 @@ import {
 
 export default function ShareModal({ open, onClose }) {
   const t = useT()
-  const { expenses, categories, filters } = useApp()
+  const { expenses, categories, filters, filtered } = useApp()
   const [copied, setCopied] = useState(false)
   const [sharing, setSharing] = useState(false)
 
-  const filtered   = filteredExpenses(expenses, filters, categories)
   const summary    = calculateSummary(filtered, categories)
   const label      = periodLabel(filters.period)
-  const shareText  = buildShareText(expenses, categories, filters)
+  const shareText  = buildShareText(filtered, categories, filters, t)
   const rate       = summary.income
     ? Math.max(0, Math.round((summary.balance / summary.income) * 100))
     : 0

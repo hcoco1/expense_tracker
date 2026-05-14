@@ -15,8 +15,8 @@ create table if not exists public.expenses (
   user_id uuid not null references auth.users(id) on delete cascade,
   category_id uuid not null references public.categories(id) on delete restrict,
   amount numeric(12, 2) not null check (amount > 0),
-  note text,
-  payment_method text not null default 'Card',
+  note text check (note is null or char_length(note) <= 500),
+  payment_method text not null default 'Card' check (payment_method in ('Card', 'Cash', 'Bank Transfer', 'Wallet', 'Other')),
   expense_date date not null default current_date,
   created_at timestamptz not null default now()
 );

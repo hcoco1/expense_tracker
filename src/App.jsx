@@ -1,6 +1,6 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { AppProvider, useApp, ADMIN_EMAILS } from './context/AppContext'
+import { AppProvider, useApp, isAdminUser } from './context/AppContext'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import CategoriesPage from './pages/CategoriesPage'
@@ -20,15 +20,27 @@ function PrivateRoute({ children }) {
 
 function PublicRoute({ children }) {
   const { session, authLoading } = useApp()
-  if (authLoading) return null
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    )
+  }
   return session ? <Navigate to="/dashboard" replace /> : children
 }
 
 function AdminRoute({ children }) {
   const { session, authLoading } = useApp()
-  if (authLoading) return null
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    )
+  }
   if (!session) return <Navigate to="/" replace />
-  if (!ADMIN_EMAILS.includes(session.user?.email)) return <Navigate to="/dashboard" replace />
+  if (!isAdminUser(session)) return <Navigate to="/dashboard" replace />
   return children
 }
 

@@ -5,7 +5,7 @@ import {
 import { Doughnut, Line } from 'react-chartjs-2'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
-import { filteredExpenses, buildTrendBuckets, periodLabel } from '../lib/filters'
+import { buildTrendBuckets, periodLabel } from '../lib/filters'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Filler)
 
@@ -17,8 +17,7 @@ function chartTextColor() {
 
 export default function Charts() {
   const t = useT()
-  const { expenses, categories, filters, theme } = useApp()
-  const filtered = filteredExpenses(expenses, filters, categories)
+  const { expenses, categories, filters, filtered, theme } = useApp()
   const label = t(periodLabel(filters.period))
 
   // Category doughnut — expense only

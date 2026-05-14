@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Users, ReceiptText, Tags, ShieldAlert, RefreshCw } from 'lucide-react'
-import { useApp, ADMIN_EMAILS } from '../context/AppContext'
+import { useApp, isAdminUser } from '../context/AppContext'
 import { supabase } from '../lib/supabase'
 import { useT } from '../i18n'
 import { usePageTitle } from '../hooks/usePageTitle'
@@ -33,9 +33,9 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const isAdmin = ADMIN_EMAILS.includes(session?.user?.email)
+  const isAdmin = isAdminUser(session)
 
-  async function loadAdminData() {
+  const loadAdminData = useCallback(async () => {
     if (!supabase || !isAdmin) return
     setLoading(true)
     setError(null)
@@ -53,7 +53,6 @@ export default function AdminPage() {
       const allExp = expR.data || []
       const allCat = catR.data || []
 
-      // Group by user
       const userMap = {}
       allExp.forEach(({ user_id, amount, categories: cat }) => {
         if (!userMap[user_id]) userMap[user_id] = { expenses: 0, income: 0, spend: 0 }
@@ -77,12 +76,12 @@ export default function AdminPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAdmin])
 
   useEffect(() => {
     if (isAdmin) loadAdminData()
     else setLoading(false)
-  }, [session?.user?.id])
+  }, [isAdmin, loadAdminData])
 
   if (!isAdmin) {
     return <Navigate to="/dashboard" replace />

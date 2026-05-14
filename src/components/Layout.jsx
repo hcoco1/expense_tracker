@@ -1,6 +1,6 @@
 import { LogOut, LayoutDashboard, PlusCircle, Tags, Plus, Palette, Globe, ShieldCheck, Share2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useApp, ADMIN_EMAILS } from '../context/AppContext'
+import { useApp, isAdminUser } from '../context/AppContext'
 import { useT, LANGUAGES } from '../i18n'
 import { supabase } from '../lib/supabase'
 
@@ -14,7 +14,7 @@ export default function Layout({ title, subtitle, children, onAddClick, onShareC
   const t = useT()
   const { theme, setTheme, language, setLanguage, session } = useApp()
   const navigate = useNavigate()
-  const isAdmin = ADMIN_EMAILS.includes(session?.user?.email)
+  const isAdmin = isAdminUser(session)
 
   async function handleLogout() {
     if (supabase) await supabase.auth.signOut()

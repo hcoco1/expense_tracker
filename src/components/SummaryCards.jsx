@@ -1,14 +1,13 @@
 import { Sparkles } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { useT } from '../i18n'
-import { filteredExpenses, calculateSummary, periodLabel } from '../lib/filters'
+import { calculateSummary, periodLabel } from '../lib/filters'
 import { formatCurrency } from '../lib/utils'
 
 export default function SummaryCards() {
   const t = useT()
-  const { expenses, categories, filters } = useApp()
+  const { expenses, categories, filters, filtered } = useApp()
 
-  const filtered = filteredExpenses(expenses, filters, categories)
   const summary = calculateSummary(filtered, categories)
   const totalSummary = calculateSummary(expenses, categories)
   const label = t(periodLabel(filters.period))
