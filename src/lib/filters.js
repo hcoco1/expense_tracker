@@ -98,7 +98,8 @@ export function buildTrendBuckets(filters, expenses) {
 
   if (period === 'custom') {
     const { start, end } = getPeriodRange(filters)
-    const days = Math.max(1, Math.round((end - start) / 86400000) + 1)
+    const endMidnight = new Date(end.getFullYear(), end.getMonth(), end.getDate())
+    const days = Math.max(1, Math.round((endMidnight - start) / 86400000) + 1)
     if (days <= 31) {
       return Array.from({ length: days }, (_, i) => {
         const date = new Date(start)

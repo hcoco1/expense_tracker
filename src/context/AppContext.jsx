@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback, useMemo } 
 import { supabase, isConfigured } from '../lib/supabase'
 import { defaultCategories } from '../lib/constants'
 import { filteredExpenses as applyFilters } from '../lib/filters'
+import { currentDateInput } from '../lib/utils'
 
 const AppContext = createContext(null)
 
@@ -29,8 +30,8 @@ export function AppProvider({ children }) {
     period: localStorage.getItem('expense_tracker_period') || 'month',
     month: String(new Date().getMonth() + 1).padStart(2, '0'),
     year: String(new Date().getFullYear()),
-    customStart: new Date().toISOString().slice(0, 10),
-    customEnd: new Date().toISOString().slice(0, 10),
+    customStart: currentDateInput(),
+    customEnd: currentDateInput(),
     currency: localStorage.getItem('expense_tracker_currency') || 'USD',
   })
   const [theme, setTheme] = useState(localStorage.getItem('expense_tracker_theme') || 'night')
@@ -109,7 +110,7 @@ export function AppProvider({ children }) {
                 if (!data) return
                 setExpenses((prev) =>
                   payload.eventType === 'INSERT'
-                    ? [data, ...prev]
+                    ? upsertExpense(prev, data)
                     : prev.map((e) => (e.id === data.id ? data : e))
                 )
               })
@@ -172,22 +173,32 @@ export function AppProvider({ children }) {
 
   const updateCategory = useCallback(async (id, payload) => {
     if (!supabase) throw new Error('Supabase not configured')
+    const previousCategories = categories
     setCategories((prev) => prev.map((c) => (c.id === id ? { ...c, ...payload } : c)))
     const { data, error } = await supabase
       .from('categories').update(payload).eq('id', id).eq('user_id', session.user.id).select().single()
-    if (error) { fetchCategories(); throw error }
+    if (error) { setCategories(previousCategories); throw error }
     setCategories((prev) => prev.map((c) => (c.id === id ? data : c)))
     return data
-  }, [session?.user?.id, fetchCategories])
+  }, [session?.user?.id, categories])
 
   const deleteCategory = useCallback(async (id) => {
     if (!supabase) throw new Error('Supabase not configured')
+    const previousCategories = categories
     setCategories((prev) => prev.filter((c) => c.id !== id))
     const { error } = await supabase.from('categories').delete().eq('id', id).eq('user_id', session.user.id)
-    if (error) { fetchCategories(); throw error }
-  }, [session?.user?.id, fetchCategories])
+    if (error) { setCategories(previousCategories); throw error }
+  }, [session?.user?.id, categories])
 
   // ── Expenses ────────────────────────────────────────────────────────────────
+
+  // Prepend if new; replace in place if already present. Safe regardless of whether
+  // createExpense or the realtime INSERT handler fires first.
+  function upsertExpense(prev, item) {
+    return prev.some((e) => e.id === item.id)
+      ? prev.map((e) => (e.id === item.id ? item : e))
+      : [item, ...prev]
+  }
 
   const fetchExpenses = useCallback(async () => {
     if (!supabase || !session?.user?.id) return []
@@ -207,27 +218,29 @@ export function AppProvider({ children }) {
     const { data, error } = await supabase
       .from('expenses').insert({ ...payload, user_id: session.user.id }).select('*, categories(*)').single()
     if (error) throw error
-    setExpenses((prev) => [data, ...prev])
+    setExpenses((prev) => upsertExpense(prev, data))
     return data
   }, [session?.user?.id])
 
   const updateExpense = useCallback(async (id, payload) => {
     if (!supabase) throw new Error('Supabase not configured')
+    const previousExpenses = expenses
     setExpenses((prev) => prev.map((e) => (e.id === id ? { ...e, ...payload } : e)))
     const { data, error } = await supabase
       .from('expenses').update(payload).eq('id', id).eq('user_id', session.user.id)
       .select('*, categories(*)').single()
-    if (error) { fetchExpenses(); throw error }
+    if (error) { setExpenses(previousExpenses); throw error }
     setExpenses((prev) => prev.map((e) => (e.id === id ? data : e)))
     return data
-  }, [session?.user?.id, fetchExpenses])
+  }, [session?.user?.id, expenses])
 
   const deleteExpense = useCallback(async (id) => {
     if (!supabase) throw new Error('Supabase not configured')
+    const previousExpenses = expenses
     setExpenses((prev) => prev.filter((e) => e.id !== id))
     const { error } = await supabase.from('expenses').delete().eq('id', id).eq('user_id', session.user.id)
-    if (error) { fetchExpenses(); throw error }
-  }, [session?.user?.id, fetchExpenses])
+    if (error) { setExpenses(previousExpenses); throw error }
+  }, [session?.user?.id, expenses])
 
   return (
     <AppContext.Provider value={{
